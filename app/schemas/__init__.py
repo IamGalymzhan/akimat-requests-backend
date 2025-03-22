@@ -3,11 +3,13 @@ from app.schemas.department import Department, DepartmentCreate, DepartmentUpdat
 from app.schemas.request import RequestBase, RequestCreate, RequestUpdate, RequestResponse, RequestDetailResponse, RequestListResponse
 from app.schemas.request_comment import CommentBase, CommentCreate, CommentResponse, CommentDetailResponse, CommentListResponse
 from app.schemas.request_attachment import AttachmentResponse, AttachmentDetailResponse, AttachmentListResponse
+from app.schemas.statistics import Statistics, CompletionRateStats, DepartmentStats, RequestTypeStats, UserRequestCount
 
 __all__ = [
     "User", "UserCreate", "UserUpdate", "Token", "TokenPayload", "LoginRequest", "LoginResponse", "UserResponse",
     "Department", "DepartmentCreate", "DepartmentUpdate", "DepartmentResponse",
     "RequestBase", "RequestCreate", "RequestUpdate", "RequestResponse", "RequestDetailResponse", "RequestListResponse",
     "CommentBase", "CommentCreate", "CommentResponse", "CommentDetailResponse", "CommentListResponse",
-    "AttachmentResponse", "AttachmentDetailResponse", "AttachmentListResponse"
+    "AttachmentResponse", "AttachmentDetailResponse", "AttachmentListResponse",
+    "Statistics", "CompletionRateStats", "DepartmentStats", "RequestTypeStats", "UserRequestCount"
 ] 

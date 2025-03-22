@@ -9,6 +9,7 @@ from app.api.auth.me import router as me_router
 from app.api.users import router as users_router
 from app.api.departments import router as departments_router
 from app.api.requests import router as requests_router
+from app.api.statistics import router as statistics_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -33,6 +34,7 @@ app.include_router(me_router, prefix=f"{settings.API_STR}/auth", tags=["auth"])
 app.include_router(users_router, prefix=f"{settings.API_STR}/users", tags=["users"])
 app.include_router(departments_router, prefix=f"{settings.API_STR}/departments", tags=["departments"])
 app.include_router(requests_router, prefix=f"{settings.API_STR}/requests", tags=["requests"])
+app.include_router(statistics_router, prefix=f"{settings.API_STR}/statistics", tags=["statistics"])
 
 @app.get("/")
 def read_root():
