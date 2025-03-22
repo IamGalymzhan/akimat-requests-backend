@@ -3,21 +3,31 @@ from sqlalchemy.orm import Session
 
 from app.core.security import get_password_hash, verify_password
 from app.crud.base import CRUDBase
-from app.models.user import User
-from app.schemas.user import UserCreate, UserUpdate
+from app.models.user import User, UserRole
+from app.schemas.user import UserCreate, UserUpdate, AdminUserCreate
 
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
         return db.query(User).filter(User.email == email).first()
 
-    def create(self, db: Session, *, obj_in: UserCreate) -> User:
+    def create(self, db: Session, *, obj_in: Union[UserCreate, AdminUserCreate]) -> User:
+        # Convert pydantic model to dict
+        obj_in_data = obj_in.dict(exclude_unset=True)
+        
+        # Handle password hashing
+        password = obj_in_data.pop("password")
+        hashed_password = get_password_hash(password)
+        
+        # Create user object with all fields
         db_obj = User(
-            email=obj_in.email,
-            hashed_password=get_password_hash(obj_in.password),
-            full_name=obj_in.full_name,
-            is_superuser=obj_in.is_superuser,
-            is_active=obj_in.is_active,
+            hashed_password=hashed_password,
+            **obj_in_data
         )
+        
+        # If it's not an admin creation, set default role to employee
+        if not hasattr(obj_in, "role") or not obj_in.role:
+            db_obj.role = UserRole.EMPLOYEE.value
+            
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)

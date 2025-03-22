@@ -1,8 +1,10 @@
 from pydantic_settings import BaseSettings
 from typing import Optional
+import os
+from pathlib import Path
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "FastAPI Starter"
+    PROJECT_NAME: str = "Akimat Requests API"
     VERSION: str = "1.0.0"
     API_STR: str = "/api"
     
@@ -22,6 +24,15 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    
+    # NCANode Settings
+    NCANODE_API_ENDPOINT: str = "http://localhost:14579"
+    NCANODE_VERIFY_OCSP: bool = True
+    NCANODE_VERIFY_CRL: bool = True
+    
+    # File uploads
+    UPLOADS_DIR: str = str(Path(os.getcwd()) / "uploads")
+    MAX_UPLOAD_SIZE: int = 10 * 1024 * 1024  # 10 MB
 
     class Config:
         case_sensitive = True

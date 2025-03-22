@@ -2,7 +2,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
-from app.api.v1.endpoints import auth
+from app.api.auth.eds.router import router as eds_router
+from app.api.auth import registration
+from app.api.auth.email import router as email_router
+from app.api.auth.me import router as me_router
+from app.api.users import router as users_router
+from app.api.departments import router as departments_router
+from app.api.requests import router as requests_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -20,8 +26,14 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(auth.router, prefix=f"{settings.API_STR}/auth", tags=["auth"])
+app.include_router(eds_router, prefix=f"{settings.API_STR}/auth/eds", tags=["auth"])
+app.include_router(registration.router, prefix=f"{settings.API_STR}/auth", tags=["auth"])
+app.include_router(email_router, prefix=f"{settings.API_STR}/auth/email", tags=["auth"])
+app.include_router(me_router, prefix=f"{settings.API_STR}/auth", tags=["auth"])
+app.include_router(users_router, prefix=f"{settings.API_STR}/users", tags=["users"])
+app.include_router(departments_router, prefix=f"{settings.API_STR}/departments", tags=["departments"])
+app.include_router(requests_router, prefix=f"{settings.API_STR}/requests", tags=["requests"])
 
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to FastAPI Starter Template"} 
+    return {"message": "Welcome to Akimat Requests API"} 
